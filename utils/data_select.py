@@ -21,7 +21,7 @@ random.shuffle(image_files)
 
 
 # 选取2700张图片作为训练集，复制到train目录：
-train_images = image_files[:2700]
+train_images = image_files[:1800]
 for image in train_images:
     image_path = os.path.join(source_dir, "images", image)
     txt_path = os.path.join(source_dir, "labels", os.path.splitext(image)[0] + ".txt")
@@ -30,7 +30,7 @@ for image in train_images:
 
 
 # 选取900张图片作为测试集，复制到val目录：
-val_images = image_files[2700:3600]
+val_images = image_files[1800:]
 for image in val_images:
     image_path = os.path.join(source_dir, "images", image)
     txt_path = os.path.join(source_dir, "labels", os.path.splitext(image)[0] + ".txt")
