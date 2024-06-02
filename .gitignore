@@ -166,3 +166,7 @@ pnnx*
 
 # dataset cache 
 *.cache
+dataset/
+data_ana/
+*.jpg
+*.txt

@@ -1,0 +1,23 @@
+# dataset path
+path: /root/dataset/voc-person-car/
+train: ./train/images
+val: ./val/images
+test: ./val/images
+
+# number of classes
+nc: 5
+
+# class names
+#  people
+#rider
+#bicycle
+#motor
+#vehicle
+#traffic-sign
+#traffic-light
+#traffic-camera
+#warning-cone
+#ignore
+names: ['car', 'bicycle', 'motorbike','person','bus']
+
+

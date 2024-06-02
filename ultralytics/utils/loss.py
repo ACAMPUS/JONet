@@ -170,6 +170,7 @@ class BboxLoss(nn.Module):
             loss_iou = ((1.0 - iou) * weight).sum() / target_scores_sum
                 
         if self.nwd_loss:
+            # print("nwd %d",1- self.iou_ratio)
             nwd = wasserstein_loss(pred_bboxes[fg_mask], target_bboxes[fg_mask])
             nwd_loss = ((1.0 - nwd) * weight).sum() / target_scores_sum
             loss_iou = self.iou_ratio * loss_iou +  (1 - self.iou_ratio) * nwd_loss

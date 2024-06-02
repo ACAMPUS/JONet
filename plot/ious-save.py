@@ -2,6 +2,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import pandas as pd
+from matplotlib import rcParams
+import numpy as np
+
+config = {
+    "font.family": 'serif',
+    "font.size": 28,
+    "mathtext.fontset": 'stix',
+    "font.serif": ['SimSun'],
+}
+rcParams.update(config)
 
 def iou(box1, box2):
     x1, y1, w1, h1 = box1
@@ -20,6 +30,7 @@ def calculate_iou(center_distances, scale):
 
     for distance in center_distances:
         box1 = [0, 0, scale, scale]
+        # box2 = [distance, 0, scale/2, scale/2]
         box2 = [distance, 0, scale, scale]
         iou_values.append(iou(box1, box2))
 
@@ -45,15 +56,15 @@ def plot_iou_vs_distance(center_distances, data):
     plt.figure(figsize=(10, 6))
 
     for scale in ['Scale 4x4', 'Scale 8x8', 'Scale 16x16', 'Scale 32x32']:
-        plt.plot(center_distances, data[scale], label=scale)
+        plt.plot(center_distances, data[scale], label=scale,lw=3)
 
     plt.xlabel('Center Distance')
     plt.ylabel('IOU')
     plt.legend()
-    plt.title('IOU vs Center Distance for Different Bbox Scales')
-    plt.grid(True)
+    # plt.title('IOU vs Center Distance for Different Bbox Scales')
+    # plt.grid(True)
     # plt.show()  # save与show不可一起调用，如果想保存就不要调用show，否则保存的是一张空白图
-    plt.savefig('iou_plot.png', dpi=1000)  # 保存图像，设置dpi为1000
+    plt.savefig('iou_plot_full.png', dpi=300,bbox_inches='tight')  # 保存图像，设置dpi为1000
 
 if __name__ == "__main__":
     plot_and_save_iou()

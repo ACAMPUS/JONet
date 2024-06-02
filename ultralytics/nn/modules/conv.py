@@ -313,3 +313,10 @@ class Concat(nn.Module):
     def forward(self, x):
         """Forward pass for the YOLOv8 mask Proto module."""
         return torch.cat(x, self.d)
+
+
+if __name__ == '__main__':
+    sp=SpatialAttention()
+    input=torch.randn(5,128,16,16)
+    out=sp(input)
+    print(out.shape)

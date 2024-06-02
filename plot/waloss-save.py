@@ -2,6 +2,15 @@ import numpy as np
 import torch
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import rcParams
+
+config = {
+    "font.family": 'serif',
+    "font.size": 30,
+    "mathtext.fontset": 'stix',
+    "font.serif": ['SimSun'],
+}
+rcParams.update(config)
 
 
 def wasserstein_loss(pred, target, eps=1e-7, constant=12.8):
@@ -24,7 +33,8 @@ def calculate_wasserstein_loss(center_distances, scale):
 
     for distance in center_distances:
         pred = torch.tensor([0, 0, scale, scale])  # Example predicted bbox
-        target = torch.tensor([distance, 0, scale, scale])  # Example target bbox
+        # target = torch.tensor([distance, 0, scale, scale])  # Example target bbox
+        target = torch.tensor([distance, 0, scale/2, scale/2])  # Example target bbox
         wasserstein_losses.append(wasserstein_loss(pred, target).item())
 
     return wasserstein_losses
@@ -52,15 +62,15 @@ def plot_wasserstein_loss_vs_distance(center_distances, data):
     plt.figure(figsize=(10, 6))
 
     for scale in ['Scale 4x4', 'Scale 8x8', 'Scale 16x16', 'Scale 32x32']:
-        plt.plot(center_distances, data[scale], label=scale)
+        plt.plot(center_distances, data[scale], label=scale,lw=3)
 
     plt.xlabel('Center Distance')
     plt.ylabel('Wasserstein Loss')
     plt.legend()
-    plt.title('Wasserstein Loss vs Center Distance for Different Bbox Scales')
+    # plt.title('Wasserstein Loss vs Center Distance for Different Bbox Scales')
     plt.grid(False)
     # plt.show()
-    plt.savefig('wasserstein_loss_full_size.png', dpi=1000)
+    plt.savefig('wasserstein_loss_half_size.png', dpi=300,bbox_inches='tight')
 
 if __name__ == "__main__":
     plot_and_save_wasserstein_loss()

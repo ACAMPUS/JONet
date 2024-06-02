@@ -59,6 +59,7 @@ class yolov8_heatmap:
         print(f'Transferred {len(csd)}/{len(model.state_dict())} items')
         
         target_layers = [eval(layer)]
+        print("target_layers:",target_layers)
         method = eval(method)
 
         colors = np.random.uniform(0, 255, size=(len(model_names), 3)).astype(np.int)
@@ -134,23 +135,39 @@ class yolov8_heatmap:
 
             # add heatmap and box to image
             cam_image = show_cam_on_image(img.copy(), saliency_map, use_rgb=True)
-            cam_image = self.draw_detections(post_boxes[i], self.colors[int(post_result[i, :].argmax())], f'{self.model_names[int(post_result[i, :].argmax())]} {float(post_result[i].max()):.2f}', cam_image)
+            # cam_image = self.draw_detections(post_boxes[i], self.colors[int(post_result[i, :].argmax())], f'{self.model_names[int(post_result[i, :].argmax())]} {float(post_result[i].max()):.2f}', cam_image)
             cam_image = Image.fromarray(cam_image)
             cam_image.save(f'{save_path}/{i}.png')
 
+# ours small:25,medium:20,large:23
 def get_params():
     params = {
-        'weight': 'yolov8n.pt',
-        'cfg': 'ultralytics/cfg/models/v8/yolov8n.yaml',
+        'weight': 'best.pt',
+        'cfg': 'ultralytics/cfg/models/v8/yolov8-ASF-dyhead.yaml',
         'device': 'cuda:0',
-        'method': 'GradCAM', # GradCAMPlusPlus, GradCAM, XGradCAM
-        'layer': 'model.model[9]',
-        'backward_type': 'all', # class, box, all
+        'method': 'XGradCAM', # GradCAMPlusPlus, GradCAM, XGradCAM
+        'layer': 'model.model[23]',
+        'backward_type': 'class', # class, box, all
         'conf_threshold': 0.6, # 0.6
         'ratio': 0.02 # 0.02-0.1
     }
     return params
 
+
+# v8n-small:15,medium:18,large:21
+# def get_params():
+#     params = {
+#         'weight': 'bestv8.pt',
+#         'cfg': 'ultralytics/cfg/models/v8/yolov8n.yaml',
+#         'device': 'cuda:0',
+#         'method': 'GradCAM', # GradCAMPlusPlus, GradCAM, XGradCAM
+#         'layer': 'model.model[18]',
+#         'backward_type': 'class', # class, box, all
+#         'conf_threshold': 0.6, # 0.6
+#         'ratio': 0.02 # 0.02-0.1
+#     }
+#     return params
+
 if __name__ == '__main__':
     model = yolov8_heatmap(**get_params())
-    model(r'ultralytics/assets/bus.jpg', 'result')
+    model(r'dataset/tt100/98793.jpg', 'result-ours-large-XGradCAM')

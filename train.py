@@ -3,13 +3,13 @@ warnings.filterwarnings('ignore')
 from ultralytics import YOLO
 
 if __name__ == '__main__':
-    model = YOLO('ultralytics/cfg/models/v8/yolov8-goldyolo.yaml')
+    model = YOLO('ultralytics/cfg/models/v8/yolov8-ASF-no-scale+nwd+dyhead.yaml')
     model.load('yolov8n.pt') # loading pretrain weights
-    model.train(data='dataset/tt100k_ori.yaml',
+    model.train(data='dataset/voc-car-person.yaml',
                 cache=True,
                 imgsz=640,
                 epochs=300,
-                batch=16,
+                batch=64,
                 close_mosaic=10,
                 workers=12,
                 device='0',
